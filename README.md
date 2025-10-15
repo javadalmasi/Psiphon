@@ -119,6 +119,24 @@ docker build -t psiphone .
 
 This application is distributed exclusively as a container. The container image is available on GitHub Container Registry (GHCR).
 
+### Quick Start with Docker
+
+The easiest way to run Psiphone is using Docker with the pre-built image from GHCR:
+
+```bash
+# Pull and run the latest version
+docker run -p 1080:1080 --rm ghcr.io/javadalmasi/psiphone:latest
+
+# Run with default settings (Germany, port 1080)
+docker run -p 1080:1080 --rm ghcr.io/javadalmasi/psiphone:latest
+
+# Run with a specific country
+docker run -p 1080:1080 --rm ghcr.io/javadalmasi/psiphone:latest --country US
+
+# Run in shuffle mode (all countries with load balancing)
+docker run -p 1080:1080 --rm ghcr.io/javadalmasi/psiphone:latest --shuffle
+```
+
 ### Building from Source
 
 Building from source is not recommended as this application is exclusively distributed as a container. If you need to build from source, clone the repository from https://github.com/javadalmasi/Psiphon and use the Dockerfile to build the container image:
@@ -243,6 +261,24 @@ docker build -t psiphone .
 ### توزیع کانتینر
 
 این برنامه فقط به صورت کانتینر توزیع می‌شود. تصویر کانتینر در GitHub Container Registry (GHCR) موجود است.
+
+### شروع سریع با داکر
+
+آسان‌ترین راه برای اجرای پسیفون استفاده از داکر با تصویر از GHCR است:
+
+```bash
+# دریافت و اجرای آخرین نسخه
+docker run -p 1080:1080 --rm ghcr.io/javadalmasi/psiphone:latest
+
+# اجرا با تنظیمات پیش‌فرض (آلمان، پورت 1080)
+docker run -p 1080:1080 --rm ghcr.io/javadalmasi/psiphone:latest
+
+# اجرا با یک کشور خاص
+docker run -p 1080:1080 --rm ghcr.io/javadalmasi/psiphone:latest --country US
+
+# اجرا در حالت شافل (همه کشورها با بالانس لود)
+docker run -p 1080:1080 --rm ghcr.io/javadalmasi/psiphone:latest --shuffle
+```
 
 ### ساخت از منبع
 
