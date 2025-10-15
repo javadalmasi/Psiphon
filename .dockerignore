@@ -6,6 +6,7 @@ go.sum
 *.go
 !main.go
 !proxy.go
+!shuffle.go
 !go.mod
 !go.sum
 
