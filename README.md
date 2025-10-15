@@ -1,103 +1,235 @@
-# Warp-Plus
+# Psiphon Proxy
 
-Warp-Plus is an open-source implementation of Cloudflare's Warp, enhanced with Psiphon integration for circumventing censorship. This project aims to provide a robust and cross-platform VPN solution that can use psiphon on top of warp and warp-in-warp for changing the user virtual nat location.
+[English](#psiphon-proxy) | [Persian](#پروکسی-سایفون)
 
-## Features
+## English
 
-- **Warp Integration**: Leverages Cloudflare's Warp to provide a fast and secure VPN service.
-- **Psiphon Chaining**: Integrates with Psiphon for censorship circumvention, allowing seamless access to the internet in restrictive environments.
-- **Warp in Warp Chaining**: Chaning two instances of warp together to bypass location restrictions.
-- **SOCKS5 Proxy Support**: Includes a SOCKS5 proxy for secure and private browsing.
+Psiphon Proxy is a lightweight containerized SOCKS5 proxy that connects to the Psiphon network. It allows you to route your traffic through different countries using the Psiphon censorship circumvention technology.
 
-## Getting Started
+### Features
 
-### Prerequisites
-
-- [Download the latest version from the releases page](https://github.com/bepass-org/warp-plus/releases)
-- Basic understanding of VPN and proxy configurations
+- **Lightweight**: Container-optimized with minimal resource usage
+- **SOCKS5 Proxy**: Provides standard SOCKS5 proxy functionality
+- **Country Selection**: Choose from various countries for your connection
+- **Container-Ready**: Designed specifically for containerized deployments
+- **Easy Configuration**: Simple command-line options for configuration
 
 ### Usage
 
+#### Command Line Options
+
 ```
 NAME
-  warp-plus
+  Psiphon-Proxy
 
 FLAGS
-  -4                       only use IPv4 for random warp endpoint
-  -6                       only use IPv6 for random warp endpoint
   -v, --verbose            enable verbose logging
-  -b, --bind STRING        socks bind address (default: 127.0.0.1:8086)
-  -e, --endpoint STRING    warp endpoint
-  -k, --key STRING         warp key
-      --dns STRING         DNS address (default: 1.1.1.1)
-      --gool               enable gool mode (warp in warp)
-      --cfon               enable psiphon mode (must provide country as well)
-      --country STRING     psiphon country code (valid values: [AT AU BE BG CA CH CZ DE DK EE ES FI FR GB HR HU IE IN IT JP LV NL NO PL PT RO RS SE SG SK US]) (default: AT)
-      --scan               enable warp scanning
-      --rtt DURATION       scanner rtt limit (default: 1s)
-      --cache-dir STRING   directory to store generated profiles
-      --fwmark UINT        set linux firewall mark for tun mode (requires sudo/root/CAP_NET_ADMIN) (default: 0)
-      --reserved STRING    override wireguard reserved value (format: '1,2,3')
-      --wgconf STRING      path to a normal wireguard config
-      --test-url STRING    connectivity test url (default: http://connectivity.cloudflareclient.com/cdn-cgi/trace)
+  -b, --bind STRING        SOCKS bind address (default: 127.0.0.1:1080)
+  -c, --country STRING     psiphon country code (default: DE)
   -c, --config STRING      path to config file
-      --version            displays version number
+      --help               show help
 ```
 
-### Country Codes for Psiphon
+#### Examples
 
-- Austria (AT)
-- Australia (AU)
-- Belgium (BE)
-- Bulgaria (BG)
-- Canada (CA)
-- Switzerland (CH)
-- Czech Republic (CZ)
-- Germany (DE)
-- Denmark (DK)
-- Estonia (EE)
-- Spain (ES)
-- Finland (FI)
-- France (FR)
-- United Kingdom (GB)
-- Croatia (HR)
-- Hungary (HU)
-- Ireland (IE)
-- India (IN)
-- Italy (IT)
-- Japan (JP)
-- Latvia (LV)
-- Netherlands (NL)
-- Norway (NO)
-- Poland (PL)
-- Portugal (PT)
-- Romania (RO)
-- Serbia (RS)
-- Sweden (SE)
-- Singapore (SG)
-- Slovakia (SK)
-- United States (US)
-![0](https://raw.githubusercontent.com/Ptechgithub/configs/main/media/line.gif)
-### Termux
+Connect with default settings (Germany, port 1080):
+```bash
+docker run -p 1080:1080 --rm psiphon-proxy
+```
+
+Connect to a specific country:
+```bash
+docker run -p 1080:1080 --rm psiphon-proxy --country US
+```
+
+Change the bind port:
+```bash
+docker run -p 8080:8080 --rm psiphon-proxy --bind 0.0.0.0:8080 --country CA
+```
+
+#### Configuration File
+
+You can also use a configuration file in JSON format:
+
+```json
+{
+  "verbose": false,
+  "bind": "127.0.0.1:1080",
+  "country": "DE"
+}
+```
+
+### Supported Countries
+
+| Flag | Country Code | Country Name |
+|------|--------------|--------------|
+| 🇦🇹 | AT | Austria |
+| 🇦🇺 | AU | Australia |
+| 🇧🇪 | BE | Belgium |
+| 🇧🇬 | BG | Bulgaria |
+| 🇨🇦 | CA | Canada |
+| 🇨🇭 | CH | Switzerland |
+| 🇨🇿 | CZ | Czech Republic |
+| 🇩🇪 | DE | Germany |
+| 🇩🇰 | DK | Denmark |
+| 🇪🇪 | EE | Estonia |
+| 🇪🇸 | ES | Spain |
+| 🇫🇮 | FI | Finland |
+| 🇫🇷 | FR | France |
+| 🇬🇧 | GB | United Kingdom |
+| 🇭🇷 | HR | Croatia |
+| 🇭🇺 | HU | Hungary |
+| 🇮🇪 | IE | Ireland |
+| 🇮🇳 | IN | India |
+| 🇮🇹 | IT | Italy |
+| 🇯🇵 | JP | Japan |
+| 🇱🇻 | LV | Latvia |
+| 🇳🇱 | NL | Netherlands |
+| 🇳🇴 | NO | Norway |
+| 🇵🇱 | PL | Poland |
+| 🇵🇹 | PT | Portugal |
+| 🇷🇴 | RO | Romania |
+| 🇷🇸 | RS | Serbia |
+| 🇸🇪 | SE | Sweden |
+| 🇸🇬 | SG | Singapore |
+| 🇸🇰 | SK | Slovakia |
+| 🇺🇸 | US | United States |
+
+### Docker Usage
+
+#### Pull from Container Registry
+```bash
+docker pull ghcr.io/your-username/psiphon-proxy:latest
+```
+
+#### Build the Container (if building locally)
+```bash
+docker build -t psiphon-proxy .
+```
+
+### Building from Source
+
+1. Install Go 1.24 or later
+2. Clone the repository
+3. Run the following commands:
+
+```bash
+go mod tidy
+go build -o psiphon-proxy
+```
+
+## Persian
+
+پروکسی سایفون یک پروکسی SOCKS5 سبک‌وز است که در کانتینر اجرا می‌شود و به شبکه سایفون متصل می‌شود. این امکان را فراهم می‌کند که ترافیک شما را از طریق کشورهای مختلف با استفاده از فناوری دور زدن سانسور سایفون هدایت کند.
+
+### ویژگی‌ها
+
+- **سبک‌وز**: بهینه شده برای کانتینر با حداقل استفاده از منابع
+- **پروکسی SOCKS5**: ارائه عملکرد استاندارد پروکسی SOCKS5
+- **انتخاب کشور**: انتخاب از کشورهای مختلف برای اتصال شما
+- **آماده کانتینر**: به طور خاص برای استقرارهای کانتینری طراحی شده است
+- **پیکربندی آسان**: گزینه‌های خط فرمان ساده برای پیکربندی
+
+### نحوه استفاده
+
+#### گزینه‌های خط فرمان
 
 ```
-bash <(curl -fsSL https://raw.githubusercontent.com/bepass-org/warp-plus/master/termux.sh)
+نام
+  Psiphon-Proxy
+
+پرچم‌ها
+  -v, --verbose            فعال‌سازی ثبت گزارش تفصیلی
+  -b, --bind STRING        آدرس اتصال SOCKS (پیش‌فرض: 127.0.0.1:1080)
+  -c, --country STRING     کد کشور سایفون (پیش‌فرض: DE)
+  -c, --config STRING      مسیر فایل پیکربندی
+      --help               نمایش راهنما
 ```
-![1](https://github.com/Ptechgithub/configs/blob/main/media/18.jpg?raw=true)
 
-- اگه حس کردی کانکت نمیشه یا خطا میده دستور `rm -rf .cache/warp-plus` رو بزن و مجدد warp رو وارد کن.
-- بعد از نصب برای اجرای مجدد فقط کافیه که `warp` یا `usef` یا `./warp` یا `warp-plus`را وارد کنید. همش یکیه هیچ فرقی ندارد.
-- اگر با 1 نصب نشد و خطا گرفتید ابتدا یک بار 3 را بزنید تا `Uninstall` شود سپس عدد 2 رو انتخاب کنید یعنی Arm.
-- برای نمایش راهنما ` warp -h` را وارد کنید. 
-- ای پی و پورت `127.0.0.1:8086`پروتکل socks
-- در روش تبدیل اکانت  warp به warp plus (گزینه 6) مقدار ID را وارد میکنید. پس از اجرای warp دو اکانت برای شما ساخته شده که پس از انتخاب گزینه 6 خودش مقدار ID هر دو اکانت را پیدا میکند و شما باید هر بار یکی را انتخاب کنید و یا میتوانید با انتخاب manual مقدار ID دیگری را وارد کنید (مثلا برای خود برنامه ی 1.1.1.1 یا جای دیگر) با این کار هر 20 ثانیه 1 GB به اکانت شما اضافه میشود. و اکانت شما از حالت رایگان به پلاس تبدیل میشود. 
-- برای تغییر  لوکیشن با استفاده از سایفون از طریق منو یا به صورت دستی (برای مثال به USA  از دستور  زیر استفاده کنید) 
-- `warp --cfon --country US`
-- برای اسکن ای پی سالم وارپ از دستور `warp --scan` استفاده کنید. 
-- برای ترکیب (chain) دو کانفیگ برای تغییر لوکیشن از دستور `warp --gool` استفاده کنید. 
+#### مثال‌ها
 
-## Acknowledgements
+اتصال با تنظیمات پیش‌فرض (آلمان، پورت 1080):
+```bash
+docker run -p 1080:1080 --rm psiphon-proxy
+```
 
-- Cloudflare Warp
-- Psiphon
-- All contributors and supporters of this project
+اتصال به یک کشور خاص:
+```bash
+docker run -p 1080:1080 --rm psiphon-proxy --country US
+```
+
+تغییر پورت اتصال:
+```bash
+docker run -p 8080:8080 --rm psiphon-proxy --bind 0.0.0.0:8080 --country CA
+```
+
+#### فایل پیکربندی
+
+همچنین می‌توانید از یک فایل پیکربندی در قالب JSON استفاده کنید:
+
+```json
+{
+  "verbose": false,
+  "bind": "127.0.0.1:1080",
+  "country": "DE"
+}
+```
+
+### کشورهای پشتیبانی شده
+
+| پرچم | کد کشور | نام کشور |
+|------|--------|---------|
+| 🇦🇹 | AT | اتریش |
+| 🇦🇺 | AU | استرالیا |
+| 🇧🇪 | BE | بلژیک |
+| 🇧🇬 | BG | بلغارستان |
+| 🇨🇦 | CA | کانادا |
+| 🇨🇭 | CH | سوئیس |
+| 🇨🇿 | CZ | جمهوری چک |
+| 🇩🇪 | DE | آلمان |
+| 🇩🇰 | DK | دانمارک |
+| 🇪🇪 | EE | استونی |
+| 🇪🇸 | ES | اسپانیا |
+| 🇫🇮 | FI | فنلاند |
+| 🇫🇷 | FR | فرانسه |
+| 🇬🇧 | GB | انگلستان |
+| 🇭🇷 | HR | کرواسی |
+| 🇭🇺 | HU | مجارستان |
+| 🇮🇪 | IE | ایرلند |
+| 🇮🇳 | IN | هند |
+| 🇮🇹 | IT | ایتالیا |
+| 🇯🇵 | JP | ژاپن |
+| 🇱🇻 | LV | لتونی |
+| 🇳🇱 | NL | هلند |
+| 🇳🇴 | NO | نروژ |
+| 🇵🇱 | PL | لهستان |
+| 🇵🇹 | PT | پرتغال |
+| 🇷🇴 | RO | رومانی |
+| 🇷🇸 | RS | صربستان |
+| 🇸🇪 | SE | سوئد |
+| 🇸🇬 | SG | سنگاپور |
+| 🇸🇰 | SK | اسلواکی |
+| 🇺🇸 | US | ایالات متحده آمریکا |
+
+### استفاده از داکر
+
+#### دریافت از ثبت کانتینر
+```bash
+docker pull ghcr.io/your-username/psiphon-proxy:latest
+```
+
+#### ساخت کانتینر (در صورت ساخت محلی)
+```bash
+docker build -t psiphon-proxy .
+```
+
+### ساخت از منبع
+
+1. نصب گو نسخه 1.24 یا بالاتر
+2. کلون کردن مخزن
+3. اجرای دستورات زیر:
+
+```bash
+go mod tidy
+go build -o psiphon-proxy
+```
