@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"log/slog"
 	"net/netip"
+	"os"
 	"path/filepath"
 
 	"github.com/Psiphon-Labs/psiphon-tunnel-core/psiphon"
@@ -68,6 +69,11 @@ func RunPsiphonProxy(ctx context.Context, l *slog.Logger, bindAddrPort netip.Add
 
 	// Log attempt to establish Psiphon tunnel
 	l.Info("🔄 Establishing Psiphon tunnel connection...", "country", country, "flag", countryFlag)
+	
+	// Ensure the datastore directory exists
+	if err := os.MkdirAll(cacheDir, 0755); err != nil {
+		return fmt.Errorf("failed to create datastore directory: %w", err)
+	}
 	
 	// Commit the configuration to the Psiphon library
 	if err := config.Commit(true); err != nil {
