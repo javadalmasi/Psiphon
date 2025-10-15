@@ -15,7 +15,7 @@ import (
 )
 
 // appName represents the name of this application for logging and display purposes
-const appName = "Psiphon-Proxy"
+const appName = "Psiphone"
 
 // main is the entry point of the Psiphon proxy application
 // It handles command-line argument parsing, configuration loading,
@@ -29,6 +29,7 @@ func main() {
 	verbose := flag.Bool("v", false, "enable verbose logging")
 	bind := flag.String("b", "127.0.0.1:1080", "SOCKS bind address")
 	country := flag.String("c", "DE", "psiphon country code")
+	shuffle := flag.Bool("shuffle", false, "enable shuffle mode (run all countries with load balancing)")
 	_ = flag.String("config", "", "path to JSON config file") // Config file not currently used
 	help := flag.Bool("h", false, "show help")
 	
@@ -51,19 +52,32 @@ func main() {
 		l = slog.New(slog.NewTextHandler(os.Stdout, &slog.HandlerOptions{Level: slog.LevelDebug}))
 	}
 
-	// Validate the bind address format (must be a valid IP:port combination)
-	bindAddrPort, err := netip.ParseAddrPort(*bind)
-	if err != nil {
-		fmt.Fprintf(os.Stderr, "error: invalid bind address: %v\n", err)
-		os.Exit(1)
-	}
+	if *shuffle {
+		// Run in shuffle mode - start all country proxies with load balancing
+		manager := NewShuffleProxyManager(ctx, l)
+		if err := manager.Start(); err != nil {
+			fmt.Fprintf(os.Stderr, "error starting shuffle mode: %v\n", err)
+			os.Exit(1)
+		}
+		
+		// Wait for context cancellation (signal) before shutting down
+		<-ctx.Done()
+		manager.Stop()
+	} else {
+		// Validate the bind address format (must be a valid IP:port combination)
+		bindAddrPort, err := netip.ParseAddrPort(*bind)
+		if err != nil {
+			fmt.Fprintf(os.Stderr, "error: invalid bind address: %v\n", err)
+			os.Exit(1)
+		}
 
-	// Start the Psiphon proxy server with the parsed configuration
-	if err := RunPsiphonProxy(ctx, l, bindAddrPort, *country); err != nil {
-		fmt.Fprintf(os.Stderr, "error: %v\n", err)
-		os.Exit(1)
-	}
+		// Start the Psiphon proxy server with the parsed configuration
+		if err := RunPsiphonProxy(ctx, l, bindAddrPort, *country); err != nil {
+			fmt.Fprintf(os.Stderr, "error: %v\n", err)
+			os.Exit(1)
+		}
 
-	// Wait for context cancellation (signal) before shutting down
-	<-ctx.Done()
+		// Wait for context cancellation (signal) before shutting down
+		<-ctx.Done()
+	}
 }

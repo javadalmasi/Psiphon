@@ -1,13 +1,10 @@
-module github.com/your-username/psiphon-proxy
+module psiphone
 
 go 1.23.0
 
 toolchain go1.23.12
 
-require (
-	github.com/Psiphon-Labs/psiphon-tunnel-core v1.0.11-0.20250526204217-25ce5e4d95a5
-	github.com/peterbourgon/ff/v4 v4.0.0-alpha.4
-)
+require github.com/Psiphon-Labs/psiphon-tunnel-core v1.0.11-0.20250526204217-25ce5e4d95a5
 
 require (
 	filippo.io/bigmod v0.0.1 // indirect

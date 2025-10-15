@@ -1,10 +1,10 @@
-# Psiphon Proxy
+# Psiphone
 
-[English](#psiphon-proxy) | [Persian](#پروکسی-سایفون)
+[English](#psiphone) | [Persian](#پسیفون)
 
 ## English
 
-Psiphon Proxy is a lightweight containerized SOCKS5 proxy that connects to the Psiphon network. It allows you to route your traffic through different countries using the Psiphon censorship circumvention technology.
+Psiphone is a lightweight containerized SOCKS5 proxy that connects to the Psiphon network. It allows you to route your traffic through different countries using the Psiphon censorship circumvention technology.
 
 ### Features
 
@@ -13,6 +13,7 @@ Psiphon Proxy is a lightweight containerized SOCKS5 proxy that connects to the P
 - **Country Selection**: Choose from various countries for your connection
 - **Container-Ready**: Designed specifically for containerized deployments
 - **Easy Configuration**: Simple command-line options for configuration
+- **Shuffle Mode**: Run all countries simultaneously with load balancing
 
 ### Usage
 
@@ -20,12 +21,13 @@ Psiphon Proxy is a lightweight containerized SOCKS5 proxy that connects to the P
 
 ```
 NAME
-  Psiphon-Proxy
+  Psiphone
 
 FLAGS
   -v, --verbose            enable verbose logging
   -b, --bind STRING        SOCKS bind address (default: 127.0.0.1:1080)
   -c, --country STRING     psiphon country code (default: DE)
+  --shuffle                enable shuffle mode (run all countries with load balancing)
   -c, --config STRING      path to config file
       --help               show help
 ```
@@ -34,17 +36,23 @@ FLAGS
 
 Connect with default settings (Germany, port 1080):
 ```bash
-docker run -p 1080:1080 --rm psiphon-proxy
+docker run -p 1080:1080 --rm psiphone
 ```
 
 Connect to a specific country:
 ```bash
-docker run -p 1080:1080 --rm psiphon-proxy --country US
+docker run -p 1080:1080 --rm psiphone --country US
 ```
 
 Change the bind port:
 ```bash
-docker run -p 8080:8080 --rm psiphon-proxy --bind 0.0.0.0:8080 --country CA
+docker run -p 8080:8080 --rm psiphone --bind 0.0.0.0:8080 --country CA
+```
+
+#### Shuffle Mode
+Run in shuffle mode to automatically connect to all countries with load balancing:
+```bash
+docker run -p 1080:1080 --rm psiphone --shuffle
 ```
 
 #### Configuration File
@@ -99,28 +107,29 @@ You can also use a configuration file in JSON format:
 
 #### Pull from Container Registry
 ```bash
-docker pull ghcr.io/your-username/psiphon-proxy:latest
+docker pull ghcr.io/javadalmasi/psiphone:latest
 ```
 
 #### Build the Container (if building locally)
 ```bash
-docker build -t psiphon-proxy .
+docker build -t psiphone .
 ```
+
+### Container Distribution
+
+This application is distributed exclusively as a container. The container image is available on GitHub Container Registry (GHCR).
 
 ### Building from Source
 
-1. Install Go 1.24 or later
-2. Clone the repository
-3. Run the following commands:
+Building from source is not recommended as this application is exclusively distributed as a container. If you need to build from source, clone the repository from https://github.com/javadalmasi/Psiphon and use the Dockerfile to build the container image:
 
 ```bash
-go mod tidy
-go build -o psiphon-proxy
+docker build -t psiphone .
 ```
 
 ## Persian
 
-پروکسی سایفون یک پروکسی SOCKS5 سبک‌وز است که در کانتینر اجرا می‌شود و به شبکه سایفون متصل می‌شود. این امکان را فراهم می‌کند که ترافیک شما را از طریق کشورهای مختلف با استفاده از فناوری دور زدن سانسور سایفون هدایت کند.
+پسیفون یک پروکسی SOCKS5 سبک‌وز است که در کانتینر اجرا می‌شود و به شبکه سایفون متصل می‌شود. این امکان را فراهم می‌کند که ترافیک شما را از طریق کشورهای مختلف با استفاده از فناوری دور زدن سانسور سایفون هدایت کند.
 
 ### ویژگی‌ها
 
@@ -129,6 +138,7 @@ go build -o psiphon-proxy
 - **انتخاب کشور**: انتخاب از کشورهای مختلف برای اتصال شما
 - **آماده کانتینر**: به طور خاص برای استقرارهای کانتینری طراحی شده است
 - **پیکربندی آسان**: گزینه‌های خط فرمان ساده برای پیکربندی
+- **حالت شافل**: اجرای همزمان همه کشورها با بالانس لود
 
 ### نحوه استفاده
 
@@ -136,12 +146,13 @@ go build -o psiphon-proxy
 
 ```
 نام
-  Psiphon-Proxy
+  Psiphone
 
 پرچم‌ها
   -v, --verbose            فعال‌سازی ثبت گزارش تفصیلی
   -b, --bind STRING        آدرس اتصال SOCKS (پیش‌فرض: 127.0.0.1:1080)
   -c, --country STRING     کد کشور سایفون (پیش‌فرض: DE)
+  --shuffle                فعال‌سازی حالت شافل (اتصال به همه کشورها با بالانس لود)
   -c, --config STRING      مسیر فایل پیکربندی
       --help               نمایش راهنما
 ```
@@ -150,17 +161,23 @@ go build -o psiphon-proxy
 
 اتصال با تنظیمات پیش‌فرض (آلمان، پورت 1080):
 ```bash
-docker run -p 1080:1080 --rm psiphon-proxy
+docker run -p 1080:1080 --rm psiphone
 ```
 
 اتصال به یک کشور خاص:
 ```bash
-docker run -p 1080:1080 --rm psiphon-proxy --country US
+docker run -p 1080:1080 --rm psiphone --country US
 ```
 
 تغییر پورت اتصال:
 ```bash
-docker run -p 8080:8080 --rm psiphon-proxy --bind 0.0.0.0:8080 --country CA
+docker run -p 8080:8080 --rm psiphone --bind 0.0.0.0:8080 --country CA
+```
+
+#### حالت شافل
+اجرا در حالت شافل برای اتصال خودکار به همه کشورها با بالانس لود:
+```bash
+docker run -p 1080:1080 --rm psiphone --shuffle
 ```
 
 #### فایل پیکربندی
@@ -215,21 +232,22 @@ docker run -p 8080:8080 --rm psiphon-proxy --bind 0.0.0.0:8080 --country CA
 
 #### دریافت از ثبت کانتینر
 ```bash
-docker pull ghcr.io/your-username/psiphon-proxy:latest
+docker pull ghcr.io/javadalmasi/psiphone:latest
 ```
 
 #### ساخت کانتینر (در صورت ساخت محلی)
 ```bash
-docker build -t psiphon-proxy .
+docker build -t psiphone .
 ```
+
+### توزیع کانتینر
+
+این برنامه فقط به صورت کانتینر توزیع می‌شود. تصویر کانتینر در GitHub Container Registry (GHCR) موجود است.
 
 ### ساخت از منبع
 
-1. نصب گو نسخه 1.24 یا بالاتر
-2. کلون کردن مخزن
-3. اجرای دستورات زیر:
+ساخت از منبع توصیه نمی‌شود چون این برنامه فقط به صورت کانتینر توزیع می‌شود. اگر نیاز به ساخت از منبع دارید، مخزن را از https://github.com/javadalmasi/Psiphon کلون کنید و از Dockerfile برای ساخت تصویر کانتینر استفاده کنید:
 
 ```bash
-go mod tidy
-go build -o psiphon-proxy
+docker build -t psiphone .
 ```

@@ -1,4 +1,4 @@
-# Psiphon Proxy Usage Examples
+# Psiphone Usage Examples
 
 ## Basic Usage
 ```bash
@@ -16,6 +16,15 @@
 
 # Run with custom port
 ./psiphon-proxy -b 127.0.0.1:8080 -c DE
+```
+
+## Shuffle Mode (All Countries)
+```bash
+# Run in shuffle mode (all countries with load balancing)
+./psiphon-proxy --shuffle
+
+# Run shuffle mode with verbose logging
+./psiphon-proxy --shuffle -v
 ```
 
 ## Docker Usage

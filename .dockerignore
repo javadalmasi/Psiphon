@@ -1,0 +1,37 @@
+# Dependencies
+go.mod
+go.sum
+
+# Code and build artifacts
+*.go
+!main.go
+!proxy.go
+!go.mod
+!go.sum
+
+# Git
+.git
+.gitignore
+
+# IDE files
+.vscode
+.idea
+*.swp
+*.swo
+
+# Logs
+*.log
+logs/
+
+# System files
+.DS_Store
+Thumbs.db
+
+# Configuration that's not needed in the container
+*.md
+LICENSE
+README.md
+USAGE.md
+COUNTRIES.md
+example_config.json
+termux.sh

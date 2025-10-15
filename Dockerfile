@@ -1,4 +1,4 @@
-# Multi-stage build for Psiphon Proxy
+# Multi-stage build for Psiphone
 FROM golang:1.24-alpine AS builder
 
 # Install build dependencies
@@ -17,7 +17,7 @@ RUN go mod download
 COPY . .
 
 # Build the application
-RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o psiphon-proxy .
+RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o psiphone .
 
 # Final stage
 FROM alpine:latest
@@ -32,18 +32,19 @@ RUN adduser -D -s /bin/sh psiphon
 WORKDIR /app
 
 # Copy the binary from builder stage
-COPY --from=builder /app/psiphon-proxy .
+COPY --from=builder /app/psiphone .
 
 # Change ownership to non-root user
 RUN chown -R psiphon:psiphon /app
 USER psiphon
 
-# Expose default port
+# Expose ports (1080 for main proxy, additional ports for shuffle mode if needed)
 EXPOSE 1080
+EXPOSE 11000-11030
 
 # Health check
 HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
   CMD nc -z localhost 1080 || exit 1
 
 # Run the application
-CMD ["./psiphon-proxy"]
+CMD ["./psiphone"]
